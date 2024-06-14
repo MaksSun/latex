@@ -51,48 +51,40 @@ class Latex:
 
     def create_pdf(self):
         # Запись TeX-кода в файл
-        with open('teaching_geometry.tex', 'w', encoding='utf-8') as f:
+        with open('latetex_documets.tex', 'w', encoding='utf-8') as f:
             f.write(self.get_tex())
 
         import subprocess
         import os
 
         # Компиляция TeX-файла в PDF
-        subprocess.run(['pdflatex', 'teaching_geometry.tex'])
+        subprocess.run(['pdflatex', 'latetex_documets.tex'])
 
         # Компиляция TeX-файла в PDF
-        subprocess.run(['pdflatex', 'teaching_geometry.tex'])
+        subprocess.run(['pdflatex', 'latetex_documets.tex'])
 
         # Удаление временных файлов
-        os.remove('teaching_geometry.aux')
-        os.remove('teaching_geometry.log')
-        os.remove('teaching_geometry.tex')
+        os.remove('latetex_documets.aux')
+        os.remove('latetex_documets.log')
+        os.remove('latetex_documets.tex')
 
+    def default(self, title='', abstract='', fancyhead=''):
+        self.add_head(r'\documentclass[12pt]{article}')
+        self.add_head(r'\usepackage[T2A]{fontenc}')
+        self.add_head(r'\usepackage[utf8]{inputenc}')
+        self.add_head(r'\usepackage[left=3cm, right=1.5cm, top=2cm, bottom=2cm]{geometry}')
+        self.add_head(r'\usepackage[english, russian]{babel}')
+        self.add_head(r'\usepackage{fancyhdr}')
 
-if __name__ == '__main__':
-    Latex = Latex()
-    Latex.add_head(r'\documentclass[12pt]{article}')
-    Latex.add_head(r'\usepackage[T2A]{fontenc}')
-    Latex.add_head(r'\usepackage[utf8]{inputenc}')
-    Latex.add_head(r'\usepackage[left=3cm, right=1.5cm, top=2cm, bottom=2cm]{geometry}')
-    Latex.add_head(r'\usepackage[english, russian]{babel}')
-    Latex.add_head(r'\usepackage{fancyhdr}')
+        self.add_title(f'\\title{{{title}}}')
+        self.add_title(r'\author{Монгуш М.А. \thanks{Муниципальное автономное образовательное учреждение Лицей №1}}')
+        self.add_title(r'\date{\today}')
 
-    Latex.add_title(r'\title{}')
-    Latex.add_title(r'\author{Монгуш М.А. \thanks{Муниципальное автономное образовательное учреждение Лицей №1}}')
-    Latex.add_title(r'\date{\today}')
+        self.add_abstract(r'\begin{abstract}')
+        self.add_abstract(f'{abstract}')
+        self.add_abstract(r'\end{abstract}')
 
-    Latex.add_abstract(r'\begin{abstract}')
-    Latex.add_abstract(r'')
-    Latex.add_abstract(r'\end{abstract}')
-
-    Latex.add_fancyhead(r'\pagestyle{fancy}')
-    Latex.add_fancyhead(r'\fancyhead[R]{}')
-    Latex.add_fancyhead(r'\fancyhead[L]{Монгуш М.А.}')
-    Latex.add_fancyhead(r'\fancyhead[C]{\today}')
-
-    print(Latex.get_tex_tex())
-
-    print(Latex.get_tex())
-
-    Latex.create_pdf()
+        self.add_fancyhead(r'\pagestyle{fancy}')
+        self.add_fancyhead(f'\\fancyhead[R]{{{fancyhead}}}')
+        self.add_fancyhead(r'\fancyhead[L]{Монгуш М.А.}')
+        self.add_fancyhead(r'\fancyhead[C]{\today}')
